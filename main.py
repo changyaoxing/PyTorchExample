@@ -42,7 +42,7 @@ for i in range(2000):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-    if i%50==0:
+    if i%50==49:
         print(loss.item())
     if i==1999:
         label.reshape([1000])
@@ -52,17 +52,24 @@ for i in range(2000):
         x=range(1000)
         plt.plot(x,label,"g")
         plt.plot(x,output,"r")
+        plt.title("train MSE = "+ str(loss.item()))
         plt.show()
 
 test_x=[]
 for i in range(1000,1100):
     test_x.append(list[i:i+10])
 test_label=list[1010:1110]
+test_label=torch.tensor(test_label).reshape([100,1]).float()
 test_x=torch.tensor(test_x).float()
 test_y=model(test_x)
+loss=MSE(test_y,test_label)
 test_y.reshape([100])
 test_y=test_y.detach().numpy()
+test_label=test_label.detach().numpy()
 x=range(100)
+plt.title("test MSE = "+str(loss.item()))
 plt.plot(x,test_label,"g")
 plt.plot(x,test_y,"r")
 plt.show()
+
+
